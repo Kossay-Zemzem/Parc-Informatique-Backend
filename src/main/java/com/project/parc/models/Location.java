@@ -19,8 +19,9 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id; // Identifiant pour la database, sequence
 
-    private String name; // Or 'emplacement' – this replaces the original String field in Machine.
-    // You can add more fields here as needed, e.g., address, description, capacity, etc.
+    @Column(unique = true)
+    private String name;
+
 
     @OneToMany(mappedBy = "location", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Machine> machines = new HashSet<>(); // Bidirectional OneToMany/ManyToOne.
@@ -28,7 +29,7 @@ public class Location {
     // to prevent accidental deletion of machines when a location is deleted.
     // You can adjust based on your requirements (e.g., set location to null on machines instead).
 
-    // Optional: Helper methods for bidirectional consistency
+    //Helper methods for bidirectional consistency
     public void addMachine(Machine machine) {
         this.machines.add(machine);
         machine.setLocation(this);
