@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns="https://logging.apache.org/xml/ns"
+               xsi:schemaLocation="
+                       https://logging.apache.org/xml/ns
+                       https://logging.apache.org/xml/ns/log4j-config-2.xsd"
+>
+    <Appenders>
+        <Console name="CONSOLE">
+            <PatternLayout pattern="%style{%d{yyyy-MM-dd HH:mm:ss.SSS}}{blue} %highlight{[%level]}{FATAL=red,ERROR=red,WARN=yellow,INFO=green,DEBUG=cyan} %msg%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <!-- Note that additivity attribute is falsly flagged by the IDE due to an XML bug -->
+        <Logger name="com.project.parc" level="DEBUG" additivity="false">
+            <AppenderRef ref="CONSOLE" />
+        </Logger>
+        <Logger name="org.springframework" level="WARN">
+            <AppenderRef ref="CONSOLE" />
+        </Logger>
+        <Logger name="org.hibernate" level="WARN">
+            <AppenderRef ref="CONSOLE" />
+        </Logger>
+        <Logger name="org.apache.catalina" level="WARN">
+            <AppenderRef ref="CONSOLE" />
+        </Logger>
+        <Logger name="org.apache.coyote" level="WARN">
+            <AppenderRef ref="CONSOLE" />
+        </Logger>
+        <Root level="WARN">
+            <AppenderRef ref="CONSOLE" />
+        </Root>
+    </Loggers>
+</Configuration>
