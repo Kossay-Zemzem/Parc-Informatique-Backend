@@ -19,24 +19,30 @@ public class MachineController {
         this.machineServ = MS;
     }
 
+    //Add machine
     @PostMapping(path = "/machine")
-    public void ajouterMachine(@RequestBody Machine m){ //TODO change machine to a machineCreateDTO (either use location string or ID depending on what the front will store)
+    public void ajouterMachine(@RequestBody Machine m){ //
         machineServ.ajouterMachine(m);
     }
 
-
+    //Fetch machines by location
     @GetMapping(path ="/listMachine") //GET MACHINE BY LOCATION
-    public List<MachineDTO> getMachinesByEmplacement(@RequestParam("emplacement") String emplacement) {//TODO change String emplacement to Integer idLocation
-        LG.debug("[i] Fetching machines by emplacement: {}", emplacement);
-        return machineServ.getMachinesByEmplacement(emplacement);
+    public List<MachineDTO> getMachinesByEmplacement(@RequestParam("locationId") Integer locationId) {
+        LG.info("[i] Fetching machines by location id: {}", locationId);
+        return machineServ.getMachinesByEmplacement(locationId);
     }
-
+    //Fetch all machines
     @GetMapping(path = "/parc") // GET ALL MACHINES (ALL LOCATIONS)
     public List<MachineDTO> getAllMachines() {
         LG.info("[i] Fetching all machines from the parc");
         return machineServ.getAllMachines();
     }
 
+    //Delete a machine
+
+    //Update a machine
+
+    //==============  Broken/unmaintained endpoints (for now) ==============================================
     //Methode is broken for now (JSON infinte reposnse) , need to use jackson annotations to fix it TODO
     @GetMapping(path = "/parc/full")
     public List<Machine> getAllMachinesAndHistory() {

@@ -54,8 +54,8 @@ public class MachineServ {
                 )).toList();
     }
 
-    public List<MachineDTO> getMachinesByEmplacement(String emplacement) {
-        return machineRepo.findAllByEmplacement(emplacement).stream()
+    public List<MachineDTO> getMachinesByEmplacement(Integer locationId) {
+        return machineRepo.findAllByLocationId(locationId).stream()
                 .map(
                 m -> new MachineDTO(m.getId(), m.getType(),m.getMarque(),m.getModele(),m.getServiceTag(),
                         m.getReseau(),
