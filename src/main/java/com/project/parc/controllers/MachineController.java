@@ -1,11 +1,13 @@
 package com.project.parc.controllers;
 
 import com.project.parc.models.Machine;
+import com.project.parc.models.MachineByIdDTO;
 import com.project.parc.models.MachineDTO;
 import com.project.parc.services.MachineServ;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +23,19 @@ public class MachineController {
 
     //Add machine
     @PostMapping(path = "/machine")
-    public void ajouterMachine(@RequestBody Machine m){ //
-        machineServ.ajouterMachine(m);
+    public MachineDTO ajouterMachine(@RequestBody Machine m){ //
+       return machineServ.ajouterMachine(m);
+    }
+
+    //Fetch machine by ID
+    @GetMapping(path = "/machine/{id}")
+    public ResponseEntity<MachineByIdDTO> getMachineById(@PathVariable("id") Integer id) {
+        if (id ==null || id <=0){
+            LG.warn("[!] Invalid machine ID: {}", id);
+            return ResponseEntity.badRequest().body(null);
+        }
+        LG.info("[i] Fetching machine by id: {}", id);
+        return ResponseEntity.ok().body(machineServ.getMachineDTObyId(id));
     }
 
     //Fetch machines by location
@@ -41,6 +54,20 @@ public class MachineController {
     //Delete a machine
 
     //Update a machine
+    @PatchMapping(path = "/machine/{id}")
+    public ResponseEntity<MachineDTO> updateMachine(@PathVariable("id") Integer id, @RequestBody Machine updatedMachine) {
+        if (id == null || id <= 0) {
+            LG.warn("[!] Invalid machine ID: {}", id);
+            return ResponseEntity.badRequest().body(null);
+        }
+        LG.info("[i] Updating machine with id: {}", id);
+        MachineDTO machineDTO = machineServ.updateMachine(id, updatedMachine);
+        if (machineDTO == null) {
+            LG.warn("[!] Machine with ID {} not found for update", id);
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(machineDTO);
+    }
 
     //==============  Broken/unmaintained endpoints (for now) ==============================================
     //Methode is broken for now (JSON infinte reposnse) , need to use jackson annotations to fix it TODO
