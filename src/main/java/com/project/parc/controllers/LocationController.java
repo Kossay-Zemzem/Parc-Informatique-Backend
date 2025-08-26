@@ -30,6 +30,10 @@ public class LocationController {
             LG.warn("[!] Location name is null or empty.");
             return ResponseEntity.badRequest().body(null);
         }
+        if (locationName.equalsIgnoreCase("SPARE")) { //safeguard for reserved name "SPARE"
+            LG.warn("[!] Cannot create location with reserved name 'SPARE'.");
+            return ResponseEntity.status(403).body(null); // Forbidden status code
+        }
         LocationDTO newLocation = locationServ.addLocation(locationName);
         if (newLocation == null) {
             LG.warn("[!] Location with name '{}' already exists.", locationName);
@@ -53,6 +57,10 @@ public class LocationController {
             LG.warn("[!] Location ID or new name is null or empty.");
             return ResponseEntity.badRequest().body(null);
         }
+        if (newName.equalsIgnoreCase("SPARE")) { //safeguard for reserved name "SPARE"
+            LG.warn("[!] Cannot rename location to reserved name 'SPARE'.");
+            return ResponseEntity.status(403).body(null); // Forbidden status code
+        }
 
         if (locationServ.locationExists(newName)) {
             LG.warn("[!] Location with name '{}' already exists.", newName);
@@ -62,5 +70,19 @@ public class LocationController {
     }
 
     //Deleting a location
+    @DeleteMapping("/locations/{locationID}")
+    public ResponseEntity<?> deleteLocation(@PathVariable("locationID") Integer locationID) {
+        if (locationID == null) {
+            LG.warn("[!] Location ID is null.");
+            return ResponseEntity.badRequest().body(null);
+        }
+        try {
+            locationServ.deleteLocation(locationID);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            LG.warn("[!] {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
 }

@@ -70,7 +70,7 @@ public class LocationServ {
         }
         if (locationRepo.existsByName(newName)) {
             LG.warn("[!] Location with name '{}' already exists.", newName);
-            return null; // Or handle this case differently if needed
+            return null;
         }
         location.setName(newName);
         locationRepo.save(location);
@@ -78,4 +78,34 @@ public class LocationServ {
     }
 
     //Deleting a location (TODO ATTENTION for cascading and what to do with associated machines)
+    public void deleteLocation(Integer locationID) {
+
+        if (locationID == null) {
+            LG.warn("[!] Location ID is null.");
+            return;
+        }
+        Location location = locationRepo.findById(locationID).orElse(null);
+        if (location == null) {
+            LG.warn("[!] Location with ID {} not found.", locationID);
+            throw new IllegalArgumentException("Location not found");
+        }
+        //safeguard for reserved name "SPARE"
+        if (location.getName().equalsIgnoreCase("SPARE")) {
+            LG.warn("[!] Cannot delete reserved location 'SPARE'.");
+            throw new IllegalArgumentException("Cannot delete reserved location 'SPARE'");
+        }
+
+        //check if location has associated machines and move them to "SPARE" location
+        if (!location.getMachines().isEmpty()) {
+            Location spareLocation = locationRepo.findByNameIgnoreCase("SPARE").orElse(null);
+            if (spareLocation == null) { //realistically , this should never happen due to the location initializer
+                LG.error("[!] 'SPARE' location not found. Cannot move machines.");
+                throw new IllegalStateException("'SPARE' location not found");
+            }
+            location.getMachines().forEach(machine -> machine.setLocation(spareLocation));
+            LG.info("[i] Moved  machines 'SPARE' before deletion.");
+        }
+        locationRepo.delete(location);
+        LG.info("[i] Deleted location with ID: {}", locationID);
+    }
 }
