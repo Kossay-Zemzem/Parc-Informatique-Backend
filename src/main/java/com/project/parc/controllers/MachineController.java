@@ -50,6 +50,12 @@ public class MachineController {
         LG.info("[i] Fetching all machines from the parc");
         return machineServ.getAllMachines();
     }
+    //fetch spare machines (not assigned to any location) CANCELED
+//    @GetMapping(path = "/spareMachines")
+//    public List<MachineDTO> getSpareMachines() {
+//        LG.info("[i] Fetching all spare machines");
+//        return machineServ.getSpareMachines();
+//    }
 
     //Delete a machine
 

@@ -142,6 +142,27 @@ public class MachineServ {
                 .orElse(null);
     }
 
+    // Fetch spare machines (location is null) CANCELED
+//    public List<MachineDTO> getSpareMachines() {
+//        return machineRepo.findAllByLocationIsNull().stream()
+//                .map(
+//                        m -> new MachineDTO(m.getId(), m.getType(), m.getMarque(), m.getModele(), m.getServiceTag(),
+//                                m.getReseau(),
+//                                m.getAssignedUser(),
+//                                null, // Location ID is null for spare machines
+//                                null, // Location name is null for spare machines
+//                                m.getOs(),
+//                                m.getCpu(),
+//                                m.getRam(),
+//                                m.getTypeStockage(),
+//                                m.getTailleStockage(),
+//                                m.getDateAchat(),
+//                                m.getDateExpirationGarantie(),
+//                                m.getVendeur(),
+//                                m.getCommentaire()
+//                        )).toList();
+//    }
+
 
     public MachineDTO updateMachine(Integer id, Machine updatedMachine) {
         Machine existing = machineRepo.findById(id).orElse(null);
@@ -214,4 +235,6 @@ public class MachineServ {
                 machine.getCommentaire()
         );
     }
+
+
 }
