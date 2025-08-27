@@ -57,8 +57,6 @@ public class MachineController {
 //        return machineServ.getSpareMachines();
 //    }
 
-    //Delete a machine
-
     //Update a machine
     @PatchMapping(path = "/machine/{id}")
     public ResponseEntity<MachineDTO> updateMachine(@PathVariable("id") Integer id, @RequestBody Machine updatedMachine) {
@@ -73,6 +71,45 @@ public class MachineController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(machineDTO);
+    }
+
+    //Delete a machine
+    @DeleteMapping(path = "/machine/{id}")
+    public ResponseEntity<?> deleteMachine(@PathVariable("id") Integer id) {
+        if (id == null || id <= 0) {
+            LG.warn("[!] Invalid machine ID: {}", id);
+            return ResponseEntity.badRequest().body(null);
+        }
+        LG.info("[i] Deleting machine with id: {}", id);
+        boolean deleted = machineServ.deleteMachine(id);
+        if (!deleted) {
+            LG.warn("[!] Machine with ID {} not found for deletion", id);
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    //recover list of deleted machines
+    @GetMapping(path = "/archivedMachines")
+    public List<MachineDTO> getAllArchivedMachines() {
+        LG.info("[i] Fetching all deleted (archived) machines");
+        return machineServ.getAllArchivedMachines();
+    }
+
+    //restore a deleted machine
+    @PostMapping(path = "/archivedMachine/{ArchiveId}/restore")
+    public ResponseEntity<MachineDTO> restoreArchivedMachine(@PathVariable("ArchiveId") Integer ArchiveId) {
+        if (ArchiveId == null || ArchiveId <= 0) {
+            LG.warn("[!] Invalid archived machine ID: {}", ArchiveId);
+            return ResponseEntity.badRequest().body(null);
+        }
+        LG.info("[i] Restoring archived machine with ArchiveId: {}", ArchiveId);
+        MachineDTO restoredMachine = machineServ.restoreArchivedMachine(ArchiveId);
+        if (restoredMachine == null) {
+            LG.warn("[!] Archived machine with ID {} not found for restoration", ArchiveId);
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(restoredMachine);
     }
 
     //==============  Broken/unmaintained endpoints (for now) ==============================================

@@ -1,6 +1,9 @@
 package com.project.parc.services;
 
 import com.project.parc.models.*;
+import com.project.parc.repository.ArchivedHistoryRepository;
+import com.project.parc.repository.ArchivedMachineRepository;
+import com.project.parc.repository.LocationRepository;
 import com.project.parc.repository.MachineRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +13,23 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class MachineServ {
 
     private final MachineRepository machineRepo;
+    private final ArchivedMachineRepository archivedRepo;
+    private final ArchivedHistoryRepository archivedHistoryRepo;
+    private final LocationRepository locationRepo;
+
 
     @Autowired
-    public MachineServ(MachineRepository MR) {
+    public MachineServ(MachineRepository MR, ArchivedMachineRepository AR, ArchivedHistoryRepository AHR, LocationRepository LR) {
         this.machineRepo = MR;
+        this.archivedRepo = AR;
+        this.archivedHistoryRepo = AHR;
+        this.locationRepo = LR; //for use in restoreArchivedMachine
     }
 
     //Adding data ========================
@@ -236,5 +247,110 @@ public class MachineServ {
         );
     }
 
+    //Delete and recover machines
 
+    public boolean deleteMachine(Integer id) {
+        Optional<Machine> optMachine = machineRepo.findById(id);
+        if (optMachine.isPresent()) {
+            Machine machine = optMachine.get();
+
+            // Archive everything
+            ArchivedMachine archived = new ArchivedMachine(machine);
+            archivedRepo.save(archived);
+
+            // Remove from main tables
+            machineRepo.delete(machine);
+
+            return true;
+        }
+        return false;
+
+    }
+
+    public List<MachineDTO> getAllArchivedMachines() {
+        return archivedRepo.findAll().stream()
+                .map(am -> new MachineDTO(am.getId(), am.getType(), am.getMarque(), am.getModele(), am.getServiceTag(),
+                        am.getReseau(),
+                        am.getAssignedUser(),
+                        am.getLocationId(), // Map Location ID
+                        am.getLocationName(), // Map Location name
+                        am.getOs(),
+                        am.getCpu(),
+                        am.getRam(),
+                        am.getTypeStockage(),
+                        am.getTailleStockage(),
+                        am.getDateAchat(),
+                        am.getDateExpirationGarantie(),
+                        am.getVendeur(),
+                        am.getCommentaire()
+                )).toList();
+    }
+
+    public MachineDTO restoreArchivedMachine(Integer archiveId) {
+        Optional<ArchivedMachine> optArchived = archivedRepo.findById(archiveId);
+        if (optArchived.isPresent()) {
+            ArchivedMachine archived = optArchived.get();
+
+            // Restore to main Machine table
+            Machine restored = new Machine();
+            restored.setType(archived.getType());
+            restored.setMarque(archived.getMarque());
+            restored.setModele(archived.getModele());
+            restored.setServiceTag(archived.getServiceTag());
+            restored.setReseau(archived.getReseau());
+            restored.setAssignedUser(archived.getAssignedUser());
+
+            // set location to SPARE (guaranteed to exist)
+            Optional<Location> optSpare = locationRepo.findByNameIgnoreCase("SPARE");
+            if (optSpare.isPresent()) {
+                Location spareLocation = new Location();
+                spareLocation.setId(optSpare.get().getId());
+                spareLocation.setName(optSpare.get().getName());
+                restored.setLocation(spareLocation);
+            }
+
+            restored.setOs(archived.getOs());
+            restored.setCpu(archived.getCpu());
+            restored.setRam(archived.getRam());
+            restored.setTypeStockage(archived.getTypeStockage());
+            restored.setTailleStockage(archived.getTailleStockage());
+            restored.setDateAchat(archived.getDateAchat());
+            restored.setDateExpirationGarantie(archived.getDateExpirationGarantie());
+            restored.setVendeur(archived.getVendeur());
+            restored.setCommentaire(archived.getCommentaire());
+
+            //restoring history log from archived history table
+            List<ArchivedHistoryLog> archivedHistories = archivedHistoryRepo.findAllByArchivedMachineId(archived.getId());
+            for (ArchivedHistoryLog ah : archivedHistories) {
+                HistoryLog hl = new HistoryLog();
+                hl.setDate(ah.getDate());
+                hl.setDescription(ah.getDescription()); // Link back to the restored machine
+                restored.addHistoryLog(hl);
+            }
+
+            Machine saved = machineRepo.save(restored);
+
+
+            // Remove from archived table
+            archivedRepo.delete(archived);
+
+            return new MachineDTO(saved.getId(), saved.getType(), saved.getMarque(), saved.getModele(), saved.getServiceTag(),
+                    saved.getReseau(),
+                    saved.getAssignedUser(),
+                    saved.getLocation() != null ? saved.getLocation().getId() : null, // Map Location ID
+                    saved.getLocation() != null ? saved.getLocation().getName() : null, // Map Location name
+                    saved.getOs(),
+                    saved.getCpu(),
+                    saved.getRam(),
+                    saved.getTypeStockage(),
+                    saved.getTailleStockage(),
+                    saved.getDateAchat(),
+                    saved.getDateExpirationGarantie(),
+                    saved.getVendeur(),
+                    saved.getCommentaire()
+            );
+        }
+        return null;
+
+    }
 }
