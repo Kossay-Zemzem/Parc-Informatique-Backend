@@ -75,18 +75,19 @@ public class MachineController {
 
     //Delete a machine
     @DeleteMapping(path = "/machine/{id}")
-    public ResponseEntity<?> deleteMachine(@PathVariable("id") Integer id) {
+    public ResponseEntity<Boolean> deleteMachine(@PathVariable("id") Integer id) {
         if (id == null || id <= 0) {
             LG.warn("[!] Invalid machine ID: {}", id);
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(false);
         }
         LG.info("[i] Deleting machine with id: {}", id);
         boolean deleted = machineServ.deleteMachine(id);
         if (!deleted) {
             LG.warn("[!] Machine with ID {} not found for deletion", id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(false);
+
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(true);
     }
 
     //recover list of deleted machines

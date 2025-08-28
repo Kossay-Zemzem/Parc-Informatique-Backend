@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ public class ArchivedMachine {
     private String vendeur;
     private String commentaire;
 
-    private LocalDate deletedAt;
+    private LocalDateTime deletedAt;
 
     private Integer locationId;
     private String locationName;
@@ -59,7 +60,7 @@ public class ArchivedMachine {
         this.dateExpirationGarantie = machine.getDateExpirationGarantie();
         this.vendeur = machine.getVendeur();
         this.commentaire = machine.getCommentaire();
-        this.deletedAt = LocalDate.now();
+        this.deletedAt = LocalDateTime.now();
 
         // Copy location
         if (machine.getLocation() != null) {

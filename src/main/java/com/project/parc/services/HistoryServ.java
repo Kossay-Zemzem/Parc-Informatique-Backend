@@ -1,9 +1,7 @@
 package com.project.parc.services;
 
-import com.project.parc.models.HistoryLog;
-import com.project.parc.models.HistoryLogCreateDTO;
-import com.project.parc.models.HistoryLogDTO;
-import com.project.parc.models.Machine;
+import com.project.parc.models.*;
+import com.project.parc.repository.ArchivedHistoryRepository;
 import com.project.parc.repository.HistoryRepository;
 import com.project.parc.repository.MachineRepository;
 import jakarta.transaction.Transactional;
@@ -12,18 +10,22 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class HistoryServ {
     private final HistoryRepository historyRepo;
+    private final ArchivedHistoryRepository archivedHistoryRepo;
     private final MachineServ machineServ;
     private static final Logger LG = LogManager.getLogger();
 
     @Autowired
-    public HistoryServ(HistoryRepository HR, MachineServ machineServ) {
+    public HistoryServ(HistoryRepository HR, MachineServ machineServ, ArchivedHistoryRepository archivedHistoryRepo) {
         this.historyRepo = HR;
         this.machineServ = machineServ;
+        this.archivedHistoryRepo = archivedHistoryRepo;
     }
 
     //Adding history entries ========================
@@ -77,5 +79,9 @@ public class HistoryServ {
             historyRepo.deleteById(historyId);
             LG.info("[i] History log with ID {} deleted successfully for machine with ID {}", historyId, machineId);
         }*/
+    }
+
+    public List<ArchivedHistoryLog> getArchivedHistoriqueMachine(Integer idMachine) {
+        return archivedHistoryRepo.findAllByArchivedMachineId(idMachine);
     }
 }

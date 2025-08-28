@@ -47,6 +47,22 @@ public class HistoryController {
         return ResponseEntity.ok(historyLogDTOs);
     }
 
+        @GetMapping(path = "/archivedMachine/{id}/history")
+    public ResponseEntity<?> getArchivedHistoriqueMachine(@PathVariable("id") Integer idMachine) {
+        List<HistoryLogDTO> historyLogDTOs = historyServ.getArchivedHistoriqueMachine(idMachine).stream()
+                .map(log -> new HistoryLogDTO(
+                        log.getId(),
+                        log.getDate(),
+                        log.getDescription()
+                ))
+                .toList();
+        return ResponseEntity.ok(historyLogDTOs);
+    }
+
+
+
+
+
     @DeleteMapping("machine/{machineID}/history/{historyId}")
     public ResponseEntity<?> deleteHistory(@PathVariable("machineID") Integer machineId, @PathVariable("historyId") Integer historyId) {
         try {
