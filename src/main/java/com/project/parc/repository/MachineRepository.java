@@ -10,6 +10,6 @@ import java.util.List;
 public interface MachineRepository extends JpaRepository<Machine,Integer> {
 //    List<Machine> findAllByEmplacement(String emplacement); // Original method to find machines by location name, now replaced with ID
     List<Machine> findAllByLocationId(Integer locationId); // New method to find machines by Location ID
-
+    List<Machine> findAllByOrderByLocationNameDesc();
 //    List<Machine> findAllByLocationIsNull(); //to be deleted
 }

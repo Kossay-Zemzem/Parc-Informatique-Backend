@@ -353,4 +353,14 @@ public class MachineServ {
         return null;
 
     }
+    //clean all archive
+    public boolean clearAllArchives() {
+        try {
+            archivedHistoryRepo.deleteAll();
+            archivedRepo.deleteAll();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

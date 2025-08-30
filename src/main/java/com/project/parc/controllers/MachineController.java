@@ -113,6 +113,18 @@ public class MachineController {
         return ResponseEntity.ok().body(restoredMachine);
     }
 
+    //Clean the archive (delete all archived machines permanently)
+    @DeleteMapping(path = "/archivedMachines/cleanAll")
+    public ResponseEntity<Boolean> cleanArchive() {
+        LG.info("[i] Cleaning the archive (deleting all archived machines permanently)");
+        boolean cleaned = machineServ.clearAllArchives();
+        if (!cleaned) {
+            LG.warn("[!] Failed to clean the archive");
+            return ResponseEntity.status(500).body(false);
+        }
+        return ResponseEntity.ok().body(true);
+    }
+
     //==============  Broken/unmaintained endpoints (for now) ==============================================
     //Methode is broken for now (JSON infinte reposnse) , need to use jackson annotations to fix it TODO
     @GetMapping(path = "/parc/full")
