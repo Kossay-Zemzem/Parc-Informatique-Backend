@@ -47,9 +47,11 @@ public class ParcApplication {
 
             String url = "http://" + hostAddress + ":" + port + "/home";
             System.out.println("App running at: " + url);
-            if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().browse(new URI(url));
-                System.out.println("Opened default browser to: " + url);
+            //Auto-launch in default browser
+            if (Boolean.parseBoolean(env.getProperty("app.autoLaunchBrowser", "true"))) {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().browse(new URI(url));
+                }
             }
 
             // Start tray with correct URL
