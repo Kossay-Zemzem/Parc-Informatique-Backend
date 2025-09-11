@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 
 @SpringBootApplication
 public class ParcApplication {
-    private static final Logger sessionLogger = LogManager.getLogger("com.project.ProjectYC");
+    private static final Logger sessionLogger = LogManager.getLogger("com.project.parc");
     private static final String SESSION_ID = generateSessionId();
 
 
