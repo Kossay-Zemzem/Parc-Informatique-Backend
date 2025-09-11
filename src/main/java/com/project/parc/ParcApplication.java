@@ -73,7 +73,7 @@ public class ParcApplication {
             SystemTray tray = SystemTray.getSystemTray();
 //			Image image = Toolkit.getDefaultToolkit().createImage("./images/icon.png");
             Image image = Toolkit.getDefaultToolkit().getImage(
-                    ParcApplication.class.getResource("/images/tray_icon_v1.png")
+                    ParcApplication.class.getResource("/images/tray32V4.png")
             );
 
             PopupMenu menu = new PopupMenu();
@@ -101,8 +101,18 @@ public class ParcApplication {
             exit.setFont(biggerFont);
             menu.add(exit);
 
-            TrayIcon trayIcon = new TrayIcon(image, "MyApp", menu);
+            TrayIcon trayIcon = new TrayIcon(image, "Parc Informatique", menu);
             trayIcon.setImageAutoSize(true);
+
+            // Add click listener to the tray icon
+            trayIcon.addActionListener(e -> {
+                try {
+                    Desktop.getDesktop().browse(new URI(url));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
+
             tray.add(trayIcon);
 
         } catch (Exception e) {

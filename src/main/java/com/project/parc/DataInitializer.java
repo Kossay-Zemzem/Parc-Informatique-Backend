@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Profile;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
-//This is for stress testing with 300 random machines, disable this on the next run
+//This class was made for stress testing with 300 random machines, will be deleted later
 @Configuration
 public class DataInitializer {
 

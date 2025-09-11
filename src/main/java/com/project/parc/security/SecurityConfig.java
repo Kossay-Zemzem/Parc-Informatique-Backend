@@ -19,7 +19,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    //NOTE : Security is temportrly disabled to accelerate work on core funcionality (higher secuirty layers already exisit since this is an internal application)
+    //NOTE : Security is temporarily disabled to accelerate work on core functionalities (higher security layers already exist since this is an internal application
+    // with limited access)
+    //Authentication will be implemented in a later patch
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
