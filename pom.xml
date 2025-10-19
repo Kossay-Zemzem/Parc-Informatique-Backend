@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.project</groupId>
 	<artifactId>parc</artifactId>
@@ -55,12 +55,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<!--			<exclusions>-->
-			<!--				<exclusion>-->
-			<!--					<groupId>org.springframework.boot</groupId>-->
-			<!--					<artifactId>spring-boot-starter-logging</artifactId>-->
-			<!--				</exclusion>-->
-			<!--			</exclusions>-->
 		</dependency>
 
 		<dependency>
@@ -162,7 +156,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version> <!-- Ensure this is the latest version -->
+				<version>3.11.0</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
