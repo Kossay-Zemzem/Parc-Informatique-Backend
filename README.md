@@ -1,8 +1,8 @@
 # Parc Informatique Backend
 
-This project is the backend service of a full-stack application developed during my summer internship that allows for managing IT equipement.
+This project is the backend service of a full-stack application developed during my summer internship that allows for managing IT equipment.
 
-The backend provides RESTful APIs to manage and organize information related to the company's computers and laptops. It also serves the web front end at launch, which is built using Angular (See the front-end repository: [Frontend Repository](https://github.com/Kossay-Zemzem/Parc-Informatique-Front) )
+The backend provides RESTful APIs to manage and organize information related to the company's computers and laptops. It also serves the web front end at launch, which is built using Angular (See the [front-end Repository](https://github.com/Kossay-Zemzem/Parc-Informatique-Front) )
 
 > ℹ️ A self-contained portable version of the application will be published later.
 
@@ -83,6 +83,7 @@ To run the software :
 ## 🧪 Future Improvements
 
 * Add authentication
+* Fix some minor card overflow issues with smaller screens
 * Add Docker support
 * Add API documentation  
 
