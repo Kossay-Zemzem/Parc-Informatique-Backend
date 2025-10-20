@@ -80,8 +80,6 @@ To run the software :
 
 ---
 
----
-
 ## 🧪 Future Improvements
 
 * Add authentication
