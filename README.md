@@ -4,7 +4,8 @@ This project is the backend service of a full-stack application developed during
 
 The backend provides RESTful APIs to manage and organize information related to the company's computers and laptops. It also serves the web front end at launch, which is built using Angular (See the [front-end Repository](https://github.com/Kossay-Zemzem/Parc-Informatique-Front) )
 
-> ℹ️ A self-contained portable version of the application will be published later.
+> [!NOTE]
+>  A self-contained portable version of the application will be released soon.
 
 ---
 
@@ -87,6 +88,7 @@ To run the software :
 * Add Docker support
 * Add API documentation  
 
-> ℹ️ The application was designed to run locally on Windows. The authentication and security module was deferred to a later phase due to time constraints. It will be integrated in a future release .
+> [!NOTE]
+> The application was designed to run locally on Windows. The authentication and security module was deferred to a later phase due to time constraints. It will be integrated in a future release .
 
 
