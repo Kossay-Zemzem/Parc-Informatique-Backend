@@ -38,15 +38,15 @@ For more details on the web UI, please refer to the [Frontend Repository](https:
 
 A self-contained portable version of the application is available for Windows users pre-loaded with sample data for quick testing.
 
-Download: *(download link will be published soon)*
+**Download**: https://github.com/Kossay-Zemzem/Parc-Informatique-Backend/releases/tag/v1.0-beta
 
-To run the software:
+**To run the software:**
+1. Download the release archive (`.zip`) using the download link above
+2. Extract the downloaded archive
+3. Run `Parc Informatique.exe`.
+4. The web interface should automatically launch in your default browser at `http://localhost:8080/home`.
 
-1. Unzip the downloaded file.
-2. Run `Parc Informatique.exe`.
-3. The web interface should automatically launch in your default browser at `http://localhost:8080/home`.
-
-*If the web interface didn't launch automatically or if you disabled auto-launch, you can access it by right-clicking the app's tray icon and selecting **"Open App"** or by browsing to `http://localhost:8080/home`*
+*If the web interface didn't launch automatically or if you disabled auto-launch, you can access it by right-clicking the app's tray icon and selecting *"Open App"* or by browsing to `http://localhost:8080/home`*
 
 <img width="182" height="92" alt="Screenshot 2026-10-11 172638" src="https://github.com/user-attachments/assets/40caaefa-1f53-476d-ac0a-314782eecc81" />
 
